@@ -196,7 +196,7 @@ const CertificatesSection = ({ language }: CertificatesSectionProps) => {
                       <AspectRatio ratio={16 / 9}>
                         <div className="relative h-full w-full overflow-hidden rounded-lg">
                           <img
-                            src={new URL(item.imageSrc, import.meta.url).pathname}
+                            src={item.imageSrc}
                             alt={item.labels[language]}
                             className="h-full w-full object-cover bg-secondary transition-transform duration-300 group-hover:scale-105"
                             loading="lazy"
@@ -236,7 +236,7 @@ const CertificatesSection = ({ language }: CertificatesSectionProps) => {
               <div className="mt-2">
                 <AspectRatio ratio={16 / 9}>
                   <img
-                    src={new URL(activeImage.imageSrc, import.meta.url).pathname}
+                    src={activeImage.imageSrc}
                     alt={activeImage.labels[language]}
                     className="h-full w-full rounded-lg object-contain bg-secondary"
                   />
