@@ -1,6 +1,11 @@
 import { Shield } from "lucide-react";
+import type { Language } from "@/lib/utils";
 
-const Footer = () => {
+type FooterProps = {
+  language: Language;
+};
+
+const Footer = ({ language }: FooterProps) => {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -15,7 +20,9 @@ const Footer = () => {
           </div>
           
           <p className="font-mono text-sm text-muted-foreground">
-            © {currentYear} All rights reserved. Built with security in mind.
+            {language === "ja"
+              ? `© ${currentYear} すべての権利を保有。セキュリティを第一に設計。`
+              : `© ${currentYear} All rights reserved. Built with security in mind.`}
           </p>
         </div>
       </div>

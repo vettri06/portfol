@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import { Shield, Menu, X } from "lucide-react";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import type { Language } from "@/lib/utils";
 
-const Navbar = () => {
+type NavbarProps = {
+  language: Language;
+  onLanguageChange: (language: Language) => void;
+};
+
+const Navbar = ({ language, onLanguageChange }: NavbarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -14,12 +21,13 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { href: "#hero", label: "Home" },
-    { href: "#education", label: "Education" },
-    { href: "#skills", label: "Skills" },
-    { href: "#projects", label: "Projects" },
-    { href: "#experience", label: "Experience" },
-    { href: "#contact", label: "Contact" },
+    { href: "#hero", label: language === "ja" ? "ホーム" : "Home" },
+    { href: "#education", label: language === "ja" ? "学歴" : "Education" },
+    { href: "#certificates", label: language === "ja" ? "認定証" : "Certificates" },
+    { href: "#skills", label: language === "ja" ? "スキル" : "Skills" },
+    { href: "#projects", label: language === "ja" ? "プロジェクト" : "Projects" },
+    { href: "#experience", label: language === "ja" ? "経験" : "Experience" },
+    { href: "#contact", label: language === "ja" ? "お問い合わせ" : "Contact" },
   ];
 
   const scrollToSection = (href: string) => {
@@ -36,7 +44,7 @@ const Navbar = () => {
         isScrolled ? "glass py-3" : "bg-transparent py-5"
       }`}
     >
-      <div className="container mx-auto px-6 flex items-center justify-between">
+      <div className="container mx-auto px-6 flex items-center justify-between gap-4">
         <a 
           href="#hero" 
           onClick={(e) => { e.preventDefault(); scrollToSection("#hero"); }}
@@ -62,12 +70,64 @@ const Navbar = () => {
           ))}
         </div>
 
-        <button
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="md:hidden text-foreground hover:text-primary transition-colors"
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="hidden md:flex items-center gap-2">
+          <ToggleGroup
+            type="single"
+            value={language}
+            onValueChange={(value) => {
+              if (value === "ja" || value === "en") {
+                onLanguageChange(value);
+              }
+            }}
+            className="bg-secondary/40 rounded-full px-1 py-1 transition-colors duration-300"
+          >
+            <ToggleGroupItem
+              value="ja"
+              className="px-3 py-1 text-xs font-mono transition-all duration-300 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:shadow-md data-[state=on]:scale-105"
+            >
+              日本語
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="en"
+              className="px-3 py-1 text-xs font-mono transition-all duration-300 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:shadow-md data-[state=on]:scale-105"
+            >
+              English
+            </ToggleGroupItem>
+          </ToggleGroup>
+        </div>
+
+        <div className="flex items-center gap-2 md:hidden">
+          <ToggleGroup
+            type="single"
+            value={language}
+            onValueChange={(value) => {
+              if (value === "ja" || value === "en") {
+                onLanguageChange(value);
+              }
+            }}
+            className="bg-secondary/40 rounded-full px-1 py-1 transition-colors duration-300"
+          >
+            <ToggleGroupItem
+              value="ja"
+              className="px-2 py-1 text-[10px] font-mono transition-all duration-300 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:shadow-md data-[state=on]:scale-105"
+            >
+              日
+            </ToggleGroupItem>
+            <ToggleGroupItem
+              value="en"
+              className="px-2 py-1 text-[10px] font-mono transition-all duration-300 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:shadow-md data-[state=on]:scale-105"
+            >
+              EN
+            </ToggleGroupItem>
+          </ToggleGroup>
+
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="text-foreground hover:text-primary transition-colors"
+          >
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {isMobileMenuOpen && (

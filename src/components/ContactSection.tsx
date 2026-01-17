@@ -1,8 +1,13 @@
 import { useState, type FormEvent } from "react";
 import { Mail, MapPin, Send, Linkedin, Github, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import type { Language } from "@/lib/utils";
 
-const ContactSection = () => {
+type ContactSectionProps = {
+  language: Language;
+};
+
+const ContactSection = ({ language }: ContactSectionProps) => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
@@ -33,14 +38,20 @@ const ContactSection = () => {
         }
 
         toast({
-          title: "Message Sent!",
-          description: "Thank you for reaching out. I'll get back to you soon.",
+          title: language === "ja" ? "メッセージを送信しました" : "Message Sent!",
+          description:
+            language === "ja"
+              ? "ご連絡ありがとうございます。折り返しご連絡いたします。"
+              : "Thank you for reaching out. I'll get back to you soon.",
         });
       } else {
-        const subject = `Portfolio Contact - ${formData.name || "New message"}`;
+        const subject =
+          language === "ja"
+            ? `ポートフォリオからの問い合わせ - ${formData.name || "新しいメッセージ"}`
+            : `Portfolio Contact - ${formData.name || "New message"}`;
         const bodyLines = [
-          `Name: ${formData.name}`,
-          `Email: ${formData.email}`,
+          `${language === "ja" ? "名前" : "Name"}: ${formData.name}`,
+          `${language === "ja" ? "メール" : "Email"}: ${formData.email}`,
           "",
           formData.message,
         ];
@@ -51,16 +62,22 @@ const ContactSection = () => {
         window.location.href = mailto;
 
         toast({
-          title: "Opening email client",
-          description: "Your default mail app will be used to send the message.",
+          title: language === "ja" ? "メールクライアントを開きます" : "Opening email client",
+          description:
+            language === "ja"
+              ? "既定のメールアプリでメッセージを送信できます。"
+              : "Your default mail app will be used to send the message.",
         });
       }
 
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
       toast({
-        title: "Unable to send message",
-        description: "Please try again later or use the email address shown.",
+        title: language === "ja" ? "メッセージを送信できませんでした" : "Unable to send message",
+        description:
+          language === "ja"
+            ? "時間をおいて再度お試しいただくか、表示されているメールアドレスをご利用ください。"
+            : "Please try again later or use the email address shown.",
       });
     } finally {
       setIsSubmitting(false);
@@ -75,16 +92,20 @@ const ContactSection = () => {
   return (
     <section id="contact" className="py-24 relative">
       <div className="container mx-auto px-6">
-        {/* Section Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
-            <span className="font-mono text-sm text-primary">// contact</span>
+            <span className="font-mono text-sm text-primary">
+              {language === "ja" ? "// お問い合わせ" : "// contact"}
+            </span>
           </div>
           <h2 className="font-mono text-3xl md:text-5xl font-bold mb-4">
-            Get In <span className="gradient-text">Touch</span>
+            {language === "ja" ? "お問い合わせ" : "Get In"}{" "}
+            {language === "ja" ? null : <span className="gradient-text">Touch</span>}
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Have a security challenge or opportunity? Let's connect.
+            {language === "ja"
+              ? "セキュリティに関するご相談・機会があれば、ぜひご連絡ください。"
+              : "Have a security challenge or opportunity? Let's connect."}
           </p>
         </div>
 
@@ -93,7 +114,7 @@ const ContactSection = () => {
           <div className="space-y-8">
             <div className="glass rounded-xl p-6 glow-border">
               <h3 className="font-mono text-xl font-bold text-foreground mb-6">
-                Contact Information
+                {language === "ja" ? "連絡先情報" : "Contact Information"}
               </h3>
               
               <div className="space-y-4">
@@ -102,7 +123,9 @@ const ContactSection = () => {
                     <Mail className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Email</p>
+                    <p className="text-sm text-muted-foreground">
+                      {language === "ja" ? "メール" : "Email"}
+                    </p>
                     <a href="mailto:velvettri913@gmail.com" className="text-foreground hover:text-primary transition-colors">
                       velvettri913@gmail.com
                     </a>
@@ -114,7 +137,9 @@ const ContactSection = () => {
                     <MapPin className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Location</p>
+                    <p className="text-sm text-muted-foreground">
+                      {language === "ja" ? "所在地" : "Location"}
+                    </p>
                     <span className="text-foreground">Thanjavur, India 613004</span>
                   </div>
                 </div>
@@ -124,7 +149,9 @@ const ContactSection = () => {
                     <Phone className="w-5 h-5 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Phone</p>
+                    <p className="text-sm text-muted-foreground">
+                      {language === "ja" ? "電話" : "Phone"}
+                    </p>
                     <a href="tel:+919092027263" className="text-foreground hover:text-primary transition-colors">
                       +91 9092027263
                     </a>
@@ -136,7 +163,7 @@ const ContactSection = () => {
             {/* Social Links */}
             <div className="glass rounded-xl p-6 glow-border">
               <h3 className="font-mono text-xl font-bold text-foreground mb-6">
-                Connect With Me
+                {language === "ja" ? "SNS でつながる" : "Connect With Me"}
               </h3>
               <div className="flex gap-4">
                 {socialLinks.map((social) => (
@@ -158,13 +185,13 @@ const ContactSection = () => {
           {/* Contact Form */}
           <form onSubmit={handleSubmit} className="glass rounded-xl p-6 glow-border">
             <h3 className="font-mono text-xl font-bold text-foreground mb-6">
-              Send a Message
+              {language === "ja" ? "メッセージを送る" : "Send a Message"}
             </h3>
             
             <div className="space-y-4">
               <div>
                 <label htmlFor="name" className="block font-mono text-sm text-muted-foreground mb-2">
-                  Name
+                  {language === "ja" ? "お名前" : "Name"}
                 </label>
                 <input
                   id="name"
@@ -173,13 +200,13 @@ const ContactSection = () => {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground"
-                  placeholder="Your name"
+                  placeholder={language === "ja" ? "お名前" : "Your name"}
                 />
               </div>
 
               <div>
                 <label htmlFor="email" className="block font-mono text-sm text-muted-foreground mb-2">
-                  Email
+                  {language === "ja" ? "メールアドレス" : "Email"}
                 </label>
                 <input
                   id="email"
@@ -188,13 +215,14 @@ const ContactSection = () => {
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground"
-                  placeholder="your@email.com"
+                  placeholder={language === "ja" ? "your@email.com"
+                    : "your@email.com"}
                 />
               </div>
 
               <div>
                 <label htmlFor="message" className="block font-mono text-sm text-muted-foreground mb-2">
-                  Message
+                  {language === "ja" ? "メッセージ" : "Message"}
                 </label>
                 <textarea
                   id="message"
@@ -203,7 +231,7 @@ const ContactSection = () => {
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full px-4 py-3 rounded-lg bg-secondary/50 border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none text-foreground placeholder:text-muted-foreground"
-                  placeholder="Your message..."
+                  placeholder={language === "ja" ? "メッセージ内容..." : "Your message..."}
                 />
               </div>
 
@@ -213,7 +241,13 @@ const ContactSection = () => {
                 className="w-full px-6 py-4 bg-primary text-primary-foreground font-mono font-semibold rounded-lg glow hover:scale-[1.02] disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2"
               >
                 <Send className="w-5 h-5" />
-                {isSubmitting ? "Sending..." : "Send Message"}
+                {isSubmitting
+                  ? language === "ja"
+                    ? "送信中..."
+                    : "Sending..."
+                  : language === "ja"
+                    ? "送信する"
+                    : "Send Message"}
               </button>
             </div>
           </form>

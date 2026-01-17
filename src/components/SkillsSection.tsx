@@ -1,25 +1,46 @@
 import { useEffect, useRef, useState } from "react";
 import { Shield, Lock, Search, Server, Code, Database, Bug, Network } from "lucide-react";
+import type { Language } from "@/lib/utils";
 
 const skills = [
-  { name: "Penetration Testing", level: 95, icon: Bug },
-  { name: "Network Security", level: 90, icon: Network },
-  { name: "Incident Response", level: 88, icon: Shield },
-  { name: "Vulnerability Assessment", level: 92, icon: Search },
-  { name: "Security Architecture", level: 85, icon: Server },
-  { name: "Cryptography", level: 80, icon: Lock },
-  { name: "Secure Coding", level: 82, icon: Code },
-  { name: "SIEM & Log Analysis", level: 87, icon: Database },
+  { nameJa: "ペネトレーションテスト", nameEn: "Penetration Testing", level: 95, icon: Bug },
+  { nameJa: "ネットワークセキュリティ", nameEn: "Network Security", level: 90, icon: Network },
+  { nameJa: "インシデントレスポンス", nameEn: "Incident Response", level: 88, icon: Shield },
+  { nameJa: "脆弱性評価", nameEn: "Vulnerability Assessment", level: 92, icon: Search },
+  { nameJa: "セキュリティアーキテクチャ", nameEn: "Security Architecture", level: 85, icon: Server },
+  { nameJa: "暗号技術", nameEn: "Cryptography", level: 80, icon: Lock },
+  { nameJa: "セキュアコーディング", nameEn: "Secure Coding", level: 82, icon: Code },
+  { nameJa: "SIEM・ログ分析", nameEn: "SIEM & Log Analysis", level: 87, icon: Database },
 ];
 
 const tools = [
-  "Wireshark", "Burp Suite", "Metasploit", "Nmap", "Kali Linux",
-  "Cisco Packet Tracer", "Linux Systems", "Python", "Bash",
-  "Splunk", "OWASP ZAP", "Ghidra", "Volatility", "John the Ripper",
-  "Hashcat", "Snort", "Suricata", "ELK Stack", "VMware", "VirtualBox"
+  "Wireshark",
+  "Burp Suite",
+  "Metasploit",
+  "Nmap",
+  "Kali Linux",
+  "Cisco Packet Tracer",
+  "Linux",
+  "Python",
+  "Bash",
+  "Splunk",
+  "OWASP ZAP",
+  "Ghidra",
+  "Volatility",
+  "John the Ripper",
+  "Hashcat",
+  "Snort",
+  "Suricata",
+  "ELK Stack",
+  "VMware",
+  "VirtualBox",
 ];
 
-const SkillsSection = () => {
+type SkillsSectionProps = {
+  language: Language;
+};
+
+const SkillsSection = ({ language }: SkillsSectionProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -43,20 +64,23 @@ const SkillsSection = () => {
   return (
     <section id="skills" ref={sectionRef} className="py-24 relative">
       <div className="container mx-auto px-6">
-        {/* Section Header */}
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
-            <span className="font-mono text-sm text-primary">// skills</span>
+            <span className="font-mono text-sm text-primary">
+              {language === "ja" ? "// スキル" : "// skills"}
+            </span>
           </div>
           <h2 className="font-mono text-3xl md:text-5xl font-bold mb-4">
-            Technical <span className="gradient-text">Expertise</span>
+            {language === "ja" ? "テクニカル" : "Technical"}{" "}
+            <span className="gradient-text">{language === "ja" ? "スキル" : "Expertise"}</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Comprehensive skill set built through years of hands-on experience in cybersecurity.
+            {language === "ja"
+              ? "サイバーセキュリティ分野での実践経験を通じて培った包括的なスキルセットです。"
+              : "Comprehensive skill set built through years of hands-on experience in cybersecurity."}
           </p>
         </div>
 
-        {/* Skills Grid */}
         <div className="grid md:grid-cols-2 gap-6 mb-16">
           {skills.map((skill, index) => (
             <div
@@ -71,7 +95,9 @@ const SkillsSection = () => {
                   <skill.icon className="w-6 h-6 text-primary" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-mono font-semibold text-foreground">{skill.name}</h3>
+                  <h3 className="font-mono font-semibold text-foreground">
+                    {language === "ja" ? skill.nameJa : skill.nameEn}
+                  </h3>
                   <span className="text-sm text-muted-foreground">{skill.level}%</span>
                 </div>
               </div>
@@ -88,10 +114,9 @@ const SkillsSection = () => {
           ))}
         </div>
 
-        {/* Tools Section */}
         <div className="text-center">
           <h3 className="font-mono text-xl font-semibold mb-8 text-foreground">
-            Tools & Technologies
+            {language === "ja" ? "使用ツール・テクノロジー" : "Tools & Technologies"}
           </h3>
           <div className="flex flex-wrap justify-center gap-3">
             {tools.map((tool, index) => (

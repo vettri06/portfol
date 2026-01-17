@@ -1,33 +1,44 @@
 import { GraduationCap, Calendar, MapPin } from "lucide-react";
+import type { Language } from "@/lib/utils";
 
 const education = [
   {
-    degree: "B.Tech Computer Science Engineering",
+    degreeJa: "B.Tech コンピュータサイエンス工学",
+    degreeEn: "B.Tech Computer Science Engineering",
     school: "SRM Institute of Science & Technology, Tiruchirappalli, India",
     period: "Expected 05/2027",
     gpa: "GPA: 8.76",
   },
   {
-    degree: "BS Data Science (Dual Degree)",
+    degreeJa: "BS データサイエンス (デュアルディグリー)",
+    degreeEn: "BS Data Science (Dual Degree)",
     school: "Indian Institute of Technology, Madras, India",
     period: "Expected 06/2030",
     gpa: "GPA: 5.88",
   },
 ];
 
-const EducationSection = () => {
+type EducationSectionProps = {
+  language: Language;
+};
+
+const EducationSection = ({ language }: EducationSectionProps) => {
   return (
     <section id="education" className="py-24 relative">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-4">
-            <span className="font-mono text-sm text-primary">// education</span>
+            <span className="font-mono text-sm text-primary">
+              {language === "ja" ? "// 学歴" : "// education"}
+            </span>
           </div>
           <h2 className="font-mono text-3xl md:text-5xl font-bold mb-4">
-            Academic <span className="gradient-text">Background</span>
+            {language === "ja" ? "学歴の" : "Academic"} <span className="gradient-text">{language === "ja" ? "概要" : "Background"}</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Dual-degree track in Computer Science and Data Science.
+            {language === "ja"
+              ? "コンピュータサイエンスとデータサイエンスのデュアルディグリーで体系的に学んでいます。"
+              : "Dual-degree track in Computer Science and Data Science."}
           </p>
         </div>
 
@@ -38,7 +49,9 @@ const EducationSection = () => {
                 <GraduationCap className="w-5 h-5" />
                 <span className="font-mono text-sm">{ed.period}</span>
               </div>
-              <h3 className="font-mono text-xl font-bold text-foreground mb-2">{ed.degree}</h3>
+              <h3 className="font-mono text-xl font-bold text-foreground mb-2">
+                {language === "ja" ? ed.degreeJa : ed.degreeEn}
+              </h3>
               <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                 <MapPin className="w-4 h-4" />
                 <span>{ed.school}</span>
